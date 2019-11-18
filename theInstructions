@@ -1,0 +1,63 @@
+class Instructions extends Screen {
+  color backgroundColor;
+  int fontSize;
+  color fontColor;
+
+
+
+//---------------------------------------------------------------------------------------CONSTRUCTOR
+  Instructions(color tempBackgroundColor, int tempFontSize, color tempFontColor) {
+    backgroundColor = tempBackgroundColor;
+    fontSize = tempFontSize;
+    fontColor = tempFontColor;
+  }
+
+//----------------------------------------------------------------------------------------METHODS
+
+
+  //DISPLAY
+  void display(int instructionsNum) {
+    background(this.backgroundColor);
+    //selects current instructions to display
+    String currentInstructions = " ";
+    
+    if (instructionsNum == 1) {
+      currentInstructions = "Instructions:";
+    }
+    if (instructionsNum == 2) {
+      currentInstructions = "In this study you will be shown different visuals";
+    }
+    if (instructionsNum == 3) {
+      currentInstructions = "Please watch carefully";
+    }
+    if (instructionsNum == 4) {
+      currentInstructions = "After each of the visuals you will be shown a scale";
+    }
+    if (instructionsNum == 5) {
+      currentInstructions = "Please rate how much you agree with the statements";
+    }
+    if (instructionsNum == 6) {
+      currentInstructions = "Note: Currently, answers are immediatly recorded/saved";
+    }
+    if (instructionsNum == 7) {
+      currentInstructions = "and can therefore not be changed";
+    }
+    if (instructionsNum == 8) {
+      currentInstructions = "So take all the time you need before responding";
+    }
+    
+    //displays instructions:
+    textAlign(CENTER, CENTER);
+    textSize(this.fontSize);
+    fill(this.fontColor);
+    text(currentInstructions, width/2, height/2);
+  }
+
+  //CHECK
+  boolean check(int instructionNum, boolean instructionsDone) {
+    if (instructionNum > 9) { //checks if all instructions have been displayed
+       instructionsDone = true;
+    }
+    return instructionsDone;
+  }
+}
