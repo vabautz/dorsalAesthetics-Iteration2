@@ -1,0 +1,64 @@
+abstract class Button {
+  int xPos;
+  int yPos;
+
+
+Button(int tempXpos, int tempYpos) {
+  xPos = tempXpos;
+  yPos = tempYpos;
+}
+
+void display() {
+}
+
+void hidden() {
+}
+
+}
+//__________________________________________________________________________________________
+
+class UnpressedButton extends Button {
+  
+  UnpressedButton(int tempXpos, int tempYpos) {
+  super(tempXpos, tempYpos); }
+  
+
+void display() { //load & display blue button
+  imageMode(CENTER);
+  PImage button;
+  button = loadImage("blueButton.png");
+  button.resize(100, 100);
+  image(button, xPos, yPos);
+}
+
+void hidden() { //cover button with black rectangle
+  noStroke();
+  fill(0);
+  rect(100, 100, xPos, yPos);
+}
+}
+
+
+//______________________________________________________________________________________________
+
+
+class PressedButton extends Button {
+  
+  PressedButton(int tempXpos, int tempYpos) {
+  super(tempXpos, tempYpos); }
+
+
+void display() { //load & display red button
+  imageMode(CENTER);
+  PImage button;
+  button = loadImage("redButton.png");
+  button.resize(100, 100);
+  image(button, xPos, yPos);
+}
+
+void hidden() { //cover button with black rectangle
+  noStroke();
+  fill(0);
+  rect(100, 100, xPos, yPos);
+}
+}
