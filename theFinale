@@ -1,0 +1,34 @@
+class Finale extends Screen {
+  color backgroundColor;
+  int fontSize;
+  color fontColor;
+
+  
+//------------------------------------------------------------------------------------CONSTRUCTOR
+  Finale(color tempBackgroundColor, int tempFontSize, color tempFontColor) {
+    backgroundColor = tempBackgroundColor;
+    fontSize = tempFontSize;
+    fontColor = tempFontColor;
+  }
+  
+  
+//------------------------------------------------------------------------------------METHODS
+
+  //DISPLAY
+  void display() {
+    background(backgroundColor);
+    String finalText = "Thank you for your participation. The experiment has now ended.";
+    textAlign(CENTER, CENTER);
+    textSize(this.fontSize);
+    fill(this.fontColor);
+    text(finalText, width/2, height/2);
+  }
+  
+  
+  //UPDATE
+  void update() { //updating will end the program
+    background(backgroundColor);
+    noLoop();
+  }
+  
+}
