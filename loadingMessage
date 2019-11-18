@@ -1,0 +1,69 @@
+class LoadingMessage extends Screen {
+  color backgroundColor;
+  int fontSize;
+  color fontColor;
+
+  
+//------------------------------------------------------------------------------------CONSTRUCTOR
+  LoadingMessage(color tempBackgroundColor, int tempFontSize, color tempFontColor) {
+    backgroundColor = tempBackgroundColor;
+    fontSize = tempFontSize;
+    fontColor = tempFontColor;
+  }
+  
+  
+//------------------------------------------------------------------------------------METHODS
+
+  //DISPLAY
+  void display() {
+    String loadingInfo1 = "Please Wait";
+    String loadingInfo2 = "Fractal is loading...";
+    
+    background(this.backgroundColor);
+  
+    textAlign(CENTER, CENTER);
+    textSize(this.fontSize);
+    fill(this.fontColor);
+    text(loadingInfo1, width/2, height/2-100);
+    text(loadingInfo2, width/2, height/2+100);
+    //println("message screen displayed");
+   // println("message is being displayed");
+    
+  }
+  
+  int display(int messageDone) {
+    String loadingInfo1 = "Please Wait";
+    String loadingInfo2 = "Fractal is loading...";
+    
+    background(this.backgroundColor);
+  
+    textAlign(CENTER, CENTER);
+    textSize(this.fontSize);
+    fill(this.fontColor);
+    text(loadingInfo1, width/2, height/2-100);
+    text(loadingInfo2, width/2, height/2+100);
+    //println("message screen displayed");
+    //println("message is being displayed");
+    messageDone = 1;
+    return messageDone;
+  }
+  
+  
+  int display(int messageDone, int delayNum) {
+    String loadingInfo1 = "Please Wait";
+    String loadingInfo2 = "Fractal is loading...";
+    
+    background(this.backgroundColor);
+  
+    textAlign(CENTER, CENTER);
+    textSize(this.fontSize);
+    fill(this.fontColor);
+    text(loadingInfo1, width/2, height/2-100);
+    text(loadingInfo2, width/2, height/2+100);
+    //println("message screen displayed");
+    delay(delayNum);
+    
+    messageDone = 1;
+    return messageDone;
+  }
+}
