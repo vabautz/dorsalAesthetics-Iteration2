@@ -1,0 +1,238 @@
+//------------------------------------------------------------------------------------GLOBALS
+///////////INSERT PARTICPANT NUMBER HERE:
+int participantNum = 1;   //default = 0;
+/////////////////////////////////////////
+
+
+
+Instructions theInstructions = new Instructions(0, 100, 255); 
+LoadingMessage theMessage = new LoadingMessage(0, 100, 255);
+boolean instructionsDone = false;
+int responseDone = 0;
+int messageDone = 0;
+
+int fractalCounter = 1; //counts up to 5 fractals 
+int frameCounter = 1; //counts up to 300 (10seconds at 30fps)
+int state = 1;
+int instructionsNum = 1;
+int questionNum = 1;
+int answer = 0;
+
+
+
+//create buttons (for answers)
+UnpressedButton uButton1 = new UnpressedButton(640, 1080);
+UnpressedButton uButton2 = new UnpressedButton(1280, 1080);
+UnpressedButton uButton3 = new UnpressedButton(1920, 1080);
+UnpressedButton uButton4 = new UnpressedButton(2560, 1080);
+UnpressedButton uButton5 = new UnpressedButton(3200, 1080);
+
+PressedButton pButton1 = new PressedButton(640, 1080);
+PressedButton pButton2 = new PressedButton(1280, 1080);
+PressedButton pButton3 = new PressedButton(1920, 1080);
+PressedButton pButton4 = new PressedButton(2560, 1080);
+PressedButton pButton5 = new PressedButton(3200, 1080);
+
+
+Table dataTable;
+
+
+//------------------------------------------------------------------------------------SETUP
+void setup() {
+  fullScreen();
+  background(0);
+  frameRate(24); //24 fps = 120 for 5secs
+  
+  String loadingInfo1 = "Please Wait";
+  String loadingInfo2 = "System Loading...";
+  
+  textAlign(CENTER, CENTER);
+  textSize(100);
+  fill(255);
+  text(loadingInfo1, width/2, height/2-100);
+  text(loadingInfo2, width/2, height/2+100);
+  
+  //initiate table to save data (answer)
+  dataTable = new Table();
+  dataTable.addColumn("score", Table.INT);
+  
+}
+
+
+
+float [] fractalLocations = {3840, 2160}; //this is the width/height of my screen
+int[] importantData = {state, fractalCounter, frameCounter, responseDone, questionNum, answer}; //used to pass important info between states and methods
+int finalCount = 0; //used to display final message for x frames
+PImage[] fractals = new PImage[72];
+PImage fractal;
+
+
+//-------------------------------------------------------------------------------------DRAW
+void draw() {
+  
+  
+  if (importantData[0] == 1) { //first state (INSTRUCTIONS)
+    noCursor();
+    importantData = instructionPhase(theInstructions, instructionsNum, instructionsDone, importantData);
+    delay(3000); //5sec delay (3secs for demo video)
+    instructionsNum ++;
+  }
+  
+  if (importantData[0] == 2) {
+   // messageDone = theMessage.display(messageDone);
+   theMessage.display();
+   messageDone = 1;
+    if (messageDone == 1) {
+      importantData[0] = 3;}
+  }
+
+  if (importantData[0] == 3) {  //second state (FRACTALS)
+    noCursor();
+    importantData[3] = 0; //reset responseDone for next fractal
+    if (importantData[2] == 1) { //if first frame of fractal
+    loadingPhase(importantData);
+    }
+    importantData = fractalPhase(importantData);
+  }
+  
+  if (importantData[0] == 4) { //third state (QUESTIONS)
+    cursor(ARROW);
+    importantData = responsePhase(importantData, dataTable);
+    
+  }
+  
+  if (importantData[0] == 5) {  //fourth state (FINAL SCREEN)
+    noCursor();
+    finalePhase(dataTable);
+    finalCount++;
+    if (finalCount == 300) {
+      background(0);
+      noLoop();
+    }
+  }
+}
+
+
+
+
+//--------------------------------------------------------------------------------------METHODS
+
+//INSTRUCTION PHASE (STATE 1)
+int[] instructionPhase(Instructions theInstructions, int instructionsNum, boolean instructionsDone, int[] importantData) {
+  theInstructions.display(instructionsNum);
+  instructionsDone = theInstructions.check(instructionsNum, instructionsDone);
+  if (instructionsDone == true) {
+    importantData[0] = 2; //end of instructions
+    //theMessage.display();
+    //delay(3000);
+    return importantData;
+  } else {
+    importantData[0] = 1;
+    return importantData;
+  }
+}
+
+
+
+//LOADING PHASE
+void loadingPhase(int[] importantData) {
+  //theMessage.display();
+  
+  if (importantData[1] == 1) {
+    for (int i = 0; i<72; i++) {
+    //theMessage.display();
+    int index = i+1;
+    fractals[i] = loadImage("Fractal1/fractal1 ("+ index +").jpg");
+    
+  }
+  }
+    if (importantData[1] == 2) {
+    for (int i = 0; i<72; i++) {
+    int index = i+1;
+    fractals[i] = loadImage("Fractal2/fractal2 ("+ index +").jpg");
+    
+  }
+  }
+  if (importantData[1] == 3) {
+    for (int i = 0; i<72; i++) {
+    int index = i+1;
+    fractals[i] = loadImage("Fractal3/fractal3 ("+ index +").jpg");
+    
+  }
+  }
+}
+  
+  
+
+//FRACTALPHASE (STATE 2)
+int[] fractalPhase(int[] importantData) {
+  importantData[3] = 0; //reset responseDone for next fractal
+
+  if (importantData[1] == 1) { //if fractalCounter == 1...
+  fractal = fractals[importantData[2]];
+  imageMode(CENTER);
+  image(fractal, 3840/2, 2160/2);
+  importantData[2]++; //update frame
+  }
+
+  if (importantData[1] == 2) {
+    imageMode(CENTER);
+    fractal = fractals[importantData[2]];
+    image(fractal, 3840/2, 2160/2);
+    importantData[2]++;
+  }
+
+  if (importantData[1] == 3) {
+    imageMode(CENTER);
+    fractal = fractals[importantData[2]];
+    image(fractal, 3840/2, 2160/2);
+    importantData[2]++;
+  }
+
+
+  if (importantData[2] == 72) { //once 120 frames are reached
+    importantData[0] = 4; //if last frame is reached, move on to response display (state 3)
+    //importantData[1]++; //increase fractal counter
+    
+    return importantData;
+  } else {
+    importantData[0] = 3; //else: keep current state
+    return importantData;
+  }
+}
+
+//RESPONSEPHASE (STATE 3)
+int[] responsePhase(int[] importantData, Table dataTable) {
+  importantData[2] = 1; //reset frameCounter
+  Response theResponse = new Response(0, 100, 255); 
+
+  theResponse.display(importantData[4]); //display response screen
+  importantData = theResponse.getAnswer(importantData, dataTable); //getAnswer from participant on rating scale
+  
+  importantData = theResponse.check(importantData); //check if all questions/scales have been displayed (currently there is only 1 question)
+ 
+  if (importantData[3] == 0) { //if reponseDone == false...
+    importantData[0] = 4; //state remains the same [important if more questions/scales will be added in the future]
+    return importantData;
+  }
+  if (importantData[3] == 1 && importantData[1] == 4) { //if responseDone == true && all fractals are displayed...     (there are a total of 9 fractals - for the demo only 3 will be displayed)
+    importantData[0] = 5; //...move to final phase/state
+    return importantData;
+  } else {
+    importantData[0] = 2; // else: state = 3 (fractalphase to display next fractal &...
+    importantData[4] = 1; //... questionNum is reset to 1
+    theMessage.display();
+    return importantData;
+  }
+}
+
+
+
+//FINALEPHASE (STATE 4)
+void finalePhase(Table dataTable) {
+  saveTable(dataTable, participantNum+".csv"); // save data file in local directory (participant number = file name)
+  Finale theFinale = new Finale(0, 100, 255); 
+  theFinale.display();
+  //theFinale.update();
+  
+}
