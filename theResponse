@@ -1,0 +1,130 @@
+class Response extends Screen {
+  color backgroundColor;
+  int fontSize;
+  color fontColor;
+
+
+  //-------------------------------------------------------------------------------------CONSTRUCTOR
+  Response(color tempBackgroundColor, int tempFontSize, color tempFontColor) {
+    backgroundColor = tempBackgroundColor;
+    fontSize = tempFontSize;
+    fontColor = tempFontColor;
+  }
+
+  //-------------------------------------------------------------------------------------METHODS
+
+  //DISPLAY
+  void display(int questionNum) {
+    String currentQuestion = "error text"; //displays error text if no questionNum is passed on
+    background(backgroundColor);
+    
+    //display unpressed buttons:
+    uButton1.display();
+    uButton2.display();
+    uButton3.display();
+    uButton4.display();
+    uButton5.display();
+
+    if (questionNum == 1) {
+      currentQuestion = "I found it beautiful";
+    }
+    /*if (questionNum == 2) {
+      currentQuestion = "Text2";
+    }
+    if (questionNum == 3) {
+      currentQuestion = "Text3";
+    } */
+
+    //displays question
+    textAlign(CENTER, CENTER);
+    textSize(fontSize);
+    fill(fontColor);
+    text(currentQuestion, width/2, height/4);
+    text("1", 640, 1400);
+    text("not at all", 640, 1600);
+    text("2", 1280, 1400);
+    text("3", 1920, 1400);
+    text("4", 2560, 1400);
+    text("5", 3200, 1400);
+    text("very", 3200, 1600);
+  }
+
+  //CHECK
+  int[] check(int[] importantData) {
+    if (importantData[4] == 2) { //checks if all questions have been displayed...
+      importantData[3] = 1; //then responseDone==true
+    }
+    return importantData;
+  }
+
+
+  //GET ANSWER
+  int[] getAnswer(int[] importantData, Table dataTable) {
+    
+    //get cursor location:
+    int currentXCursor = mouseX;
+    int currentYCursor = mouseY;
+    
+ 
+
+
+    //If mouse is pressed on one of the 5 blue buttons -> change pressed button to red, save answer (button number) in table and create csv file:
+    
+    if (mousePressed == true && ((currentXCursor >= 590 && currentXCursor <= 690) && (currentYCursor >= 1030 && currentYCursor <= 1130))) {
+      //button 1
+      importantData[5] = 1;
+      TableRow newRow = dataTable.addRow();
+      newRow.setInt("score", importantData[5]);
+      uButton1.hidden();
+      pButton1.display();
+      importantData[1]++; //increase fractalCounter
+      importantData[4]++;
+      return importantData;
+    }
+    if (mousePressed == true && ((currentXCursor >= 1230 && currentXCursor <= 1330) && (currentYCursor >= 1030 && currentYCursor <= 1130))) {
+      //button 2
+      importantData[5] = 2;
+      TableRow newRow = dataTable.addRow();
+      newRow.setInt("score", importantData[5]);
+      uButton2.hidden();
+      pButton2.display();
+      importantData[1]++; //increase fractalCounter
+      importantData[4]++;
+      return importantData;
+    }
+    if (mousePressed == true && ((currentXCursor >= 1870 && currentXCursor <= 1970) && (currentYCursor >= 1030 && currentYCursor <= 1130))) {
+      // button 3
+      importantData[5] = 3;
+      TableRow newRow = dataTable.addRow();
+      newRow.setInt("score", importantData[5]);
+      uButton3.hidden();
+      pButton3.display();
+      importantData[1]++; //increase fractalCounter
+      importantData[4]++;
+      return importantData;
+    }
+    if (mousePressed == true && ((currentXCursor >= 2510 && currentXCursor <= 2610) && (currentYCursor >= 1030 && currentYCursor <= 1130))) {
+      // button 4
+      importantData[5] = 4;
+      TableRow newRow = dataTable.addRow();
+      newRow.setInt("score", importantData[5]);
+      uButton4.hidden();
+      pButton4.display();
+      importantData[1]++; //increase fractalCounter
+      importantData[4]++;
+      return importantData;
+    }
+    if (mousePressed == true && ((currentXCursor >= 3150 && currentXCursor <= 3250) && (currentYCursor >= 1030 && currentYCursor <= 1130))) {
+      // button 5
+      importantData[5] = 5;
+      TableRow newRow = dataTable.addRow();
+      newRow.setInt("score", importantData[5]);
+      uButton5.hidden();
+      pButton5.display();
+      importantData[1]++; //increase fractalCounter
+      importantData[4]++;
+      return importantData;
+    }
+    return importantData;
+  }
+}
